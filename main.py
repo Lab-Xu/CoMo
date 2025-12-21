@@ -111,32 +111,19 @@ def run_algorithms(omics_list,
                method=cluster_method, use_pca=True,
                refinement=refinement, n_neigh_refine=n_neigh_refine)
 
-    # Metric clustering results
-    pre_y = adata.obs[cluster_method] # omics1_y, CoMo
-    # print("pre_y:", pre_y)
     spatial = adata.obsm['spatial']
-    internal_metric = internal_performance(adata_omics1, adata_omics2, pre_y, spatial)
+    refine_pre_y = adata.obs['refine_CoMo']
+    # print("refine_pre_y:", refine_pre_y)
+    refine_internal_metric = internal_performance(adata_omics1, adata_omics2, refine_pre_y, spatial)
 
     if have_anno:
         real_y = adata.obs['ground_truth']
-        external_metric = external_performance(real_y, pre_y)
+        refine_external_metric = external_performance(real_y, refine_pre_y)
     else:
-        external_metric = None,None,None,None,None,None
-
-    if refinement:
-        refine_pre_y = adata.obs['refine_CoMo']
-        # print("refine_pre_y:", refine_pre_y)
-        refine_internal_metric = internal_performance(adata_omics1, adata_omics2, refine_pre_y, spatial)
-
-        if have_anno:
-            refine_external_metric = external_performance(real_y, refine_pre_y)
-        else:
-            refine_external_metric = None,None,None,None,None,None
-    else:
-        refine_internal_metric = None,None,None,None,None,None,None
         refine_external_metric = None,None,None,None,None,None
 
-    return adata, external_metric, internal_metric, refine_external_metric, refine_internal_metric
+
+    return adata, refine_external_metric, refine_internal_metric
 
 if __name__ == "__main__":
     # read data
