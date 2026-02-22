@@ -13,9 +13,6 @@ def external_performance(real_y, pre_y):
     nmi_score = metrics.normalized_mutual_info_score(real_y, pre_y)
     ami_score = metrics.adjusted_mutual_info_score(real_y, pre_y)
 
-    # jac_score = metrics.jaccard_score(real_y, pre_y, average='macro')
-    print("========external metrics========")
-    print("Homogeneity:{:.4f}, V_measure:{:.4f}, MI:{:.4f}, ARI:{:.4f}, NMI:{:.4f}, AMI:{:.4f}".format(h_score, v_score, mi_score, ari_score, nmi_score, ami_score))
     return h_score, v_score, mi_score,ari_score, nmi_score, ami_score
 
 def internal_performance(adata1, adata2, pre_y, spatial, k=10):
@@ -26,7 +23,5 @@ def internal_performance(adata1, adata2, pre_y, spatial, k=10):
     moran = Moran(pre_y, weight)
     moran_score = moran.I
     moran_p = moran.p_sim
-    print("========internal metrics========")
-    print("moran index:{:.4f}, p-value: {}".format(moran_score, moran_p))
 
     return moran_score
